@@ -43,7 +43,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented required features:
 
-<img src='flashcards/flashcards-gif.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='flashcards-gif.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with GIF created with [Kap](https://getkap.co/)  
 
