@@ -85,44 +85,56 @@ const flashcards = [
 ]
 
 function App() {
-  const [currentCardIndex, setCurrentCardIndex] = useState(0)
-  // what the above line means:
-  // usestate = 0: tells it to remember to start at the first card (index 0) when the app loads
-  // currentCardIndex = 0: the current index (which will start at 0)
-  // setCurrentCardIndex: the function we can call to update the current card index when we want to move to the next or previous card. The screen re-renders each time
+  const [currentCardIndex, setCurrentCardIndex] = useState(0) // to update the current card index when the user clicks next or previous, and to show the first card when the app loads
 
-  const currentCard = flashcards[currentCardIndex] // grabs the current card at the current index
+  const [cardHistory, setCardHistory] = useState([0]) // Start the history with card 0 because that is the first card shown.
+  // cardHistory will be an array that will keep adding every seen card's index
 
-  const cardsLeft = flashcards.length - currentCardIndex - 1// calculates how many cards are left by taking the total number of cards and subtracting the current index + 1 (since index starts at 0)
-  // doing the -1 at the end ensures that when at the last card, it says "0/10 cards left" instead of "1/10 cards left"
+  const [historyPosition, setHistoryPosition] = useState(0) // this will keep track of where we are in the history array (always the end of it). It starts at 0 because we start on the first card.
+  // so if cardHistory = [0, 7, 12], then historyPosition = 2
 
-  // function that runs when the back arrow is clicked
+  const currentCard = flashcards[currentCardIndex]
+  const totalCards = flashcards.length
+  const currentCardNumber = historyPosition + 1
+  const [isFlipped, setIsFlipped] = useState(false) // this state variable keeps track of whether the card is flipped or not. It starts as false because we want to show the question first.
+
+  // Whenever we go to the next or previous card, we want to make sure the card is showing the question side, so we set isFlipped to false whenever we change the card.
+  const flipCard = () => {
+    setIsFlipped(!isFlipped)
+  }
+
   const goToPreviousCard = () => {
-    setCurrentCardIndex((currentIndex) => { // call the other function to update the current card index by passing in the current index as an argument
-    
-      // this is for looping back.
-      // scanario: you're on the first card, so clicking back will loop to the last card of array
-      if (currentIndex === 0) {
-        return flashcards.length - 1 // returns the absolute last card
-      } 
-      else { // for all other regular cases, just give the card at the previous index:
-        return currentIndex - 1
-      }
-    })
+    if (historyPosition > 0) { // if there were even hards seen in the past:
+      const newHistoryPosition = historyPosition - 1 // move back in the history by one card (completely delete the current card from the history). This is so that if you click next after going back, you get a new random card instead of the card you just went back from.
+
+      const previousCardIndex = cardHistory[newHistoryPosition] // get the card index at the new history postion (which is the previous card index in the history array)
+
+      setHistoryPosition(newHistoryPosition) // update the history position to the new position (which is one step back in the history)
+      setCurrentCardIndex(previousCardIndex) // the current card index is now the previous card index, which is the card at the new history position in the history array
+
+      setIsFlipped(false)
+    }
   }
 
   const goToNextCard = () => {
-    setCurrentCardIndex((currentIndex) => {
+    let randomIndex = Math.floor(Math.random() * flashcards.length) //This creates a random index to start off
 
-      // to loop back to beginning
-      // scenario: you're on the last card, so clicking next will loop to the first card of array
-      if (currentIndex === flashcards.length - 1) { // checks if you're at the last card
-        return 0 // returns first card at first index
-      } 
-      else { // for all other regular cases, just give the card at the next index:
-        return currentIndex + 1
-      }
-    })
+    while (randomIndex === currentCardIndex) { //condition ensures that the next card is not the same as the current card
+      randomIndex = Math.floor(Math.random() * flashcards.length) // use this equation to get a random index for the next card
+    }
+
+    // Copy the history up to the current position
+    const newHistory = cardHistory.slice(0, historyPosition + 1) // This creates a new array that is a copy of the cardHistory array from the start to the current history position (inclusive). This is important because if we go back in history and then click next, we want to discard any "future" history that is ahead of the current position, and start a new history from there.
+
+    newHistory.push(randomIndex) // This adds the random card to the end of the history.
+
+    setCardHistory(newHistory) // Update the card history to this new version.
+
+    setHistoryPosition(newHistory.length - 1) // Move the history position to the end of the new history array, which is the position of the new card we just added.
+
+    setCurrentCardIndex(randomIndex) // This updates the actual card shown on the screen.
+
+    setIsFlipped(false)
   }
 
   return (
@@ -132,11 +144,11 @@ function App() {
           <div className="heading">
             <img src="src/assets/webdev-basics-logo.png" alt="Heading Title 'Web Dev Basics'" />
             <h3>A fun and simple flashcard deck to learn, review, and refresh key web development concepts.</h3>
-            <p>Total cards left: {cardsLeft}/20</p>
+            <p>Total cards: 20</p>
           </div>
 
           <div className="cardSection"> 
-            <div className="flip-card"> 
+            <div className={`flip-card ${isFlipped ? 'flipped' : ''}`} onClick={flipCard}>
               <div className="flip-card-inner">
 
                 <div className="flip-card-front">
@@ -150,7 +162,7 @@ function App() {
             </div>
 
             <div className="cardControls">
-              <button onClick={goToPreviousCard} aria-label="Previous card">
+              <button onClick={goToPreviousCard} disabled={historyPosition === 0} aria-label="Previous card">
                 ←
               </button>
               <button onClick={goToNextCard} aria-label="Next card">
