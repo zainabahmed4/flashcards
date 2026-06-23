@@ -1,58 +1,56 @@
-# Web Development Project 2 - *Web Dev Basics*
+# Web Development Project 3 - *Web Dev Basics*
 
 Submitted by: **Zainab Ahmed**
 
-Web Dev Basics is a fun flashcard app designed to help users learn, review, and refresh important web development concepts. The app covers beginner-friendly topics like HTML, CSS, JavaScript, React, components, events, and more. Users can click through randomized flashcards and flip each card to reveal the answer.
+This web app: **Web Dev Basics is a flashcard study app that helps users practice beginner-friendly web development concepts. Users can flip cards, type guesses before revealing answers, get correct/incorrect feedback, move through cards in order, and switch into a random mode for extra practice.**
 
-The UI was designed to feel playful, welcoming, and thoughtful. I used a strawberry-inspired theme with soft colors, rounded cards, and a cohesive color palette to make the studying experience feel more fun and less intimidating.
-
-Time spent: **8** hours spent in total
+Time spent: **12** hours spent in total
 
 ## Required Features
 
 The following **required** functionality is completed:
 
-
-- [x] **The app displays the title of the card set, a short description, and the total number of cards**
-  - [x] Title of card set is displayed 
-  - [x] A short description of the card set is displayed 
-  - [x] A list of card pairs is created
-  - [x] The total number of cards in the set is displayed 
-  - [x] Card set is represented as a list of card pairs (an array of dictionaries where each dictionary contains the question and answer is perfectly fine)
-- [x] **A single card at a time is displayed**
-  - [x] Only one half of the information pair is displayed at a time
-- [x] **Clicking on the card flips the card over, showing the corresponding component of the information pair**
-  - [x] Clicking on a card flips it over, showing the back with corresponding information 
-  - [x] Clicking on a flipped card again flips it back, showing the front
-- [x] **Clicking on the next button displays a random new card**
+- [x] **The user can enter their guess into an input box *before* seeing the flipside of the card**
+  - [x] Application features a clearly labeled input box with a submit button where users can type in a guess
+  - [x] Clicking on the submit button with an **incorrect** answer shows visual feedback that it is wrong
+  - [x] Clicking on the submit button with a **correct** answer shows visual feedback that it is correct
+- [x] **The user can navigate through an ordered list of cards**
+  - [x] A forward/next button displayed on the card navigates to the next card in a set sequence when clicked
+  - [x] A previous/back button displayed on the card returns to the previous card in the set sequence when clicked
+  - [x] Both the next and back buttons should have some visual indication that the user is at the beginning or end of the list, not allowing for wrap-around navigation
 
 The following **optional** features are implemented:
 
-- [ ] Cards contain images in addition to or in place of text
-  - [ ] Some or all cards have images in place of or in addition to text
-- [ ] Cards have different visual styles such as color based on their category
-  - Example categories you can use:
-    - Difficulty: Easy/medium/hard
-    - Subject: Biology/Chemistry/Physics/Earth science
+- [x] Users can use a shuffle button to randomize the order of the cards
+  - [x] Cards remain in the same sequence unless random mode is selected
+  - [x] Cards change randomly once random mode is selected
+- [x] A user's answer may be counted as correct even when it is slightly different from the target answer
+  - [x] Answers are considered correct even when there are uppercase/lowercase differences
+  - [x] Answers are considered correct even when there are punctuation differences or extra spaces
+- [ ] A counter displays the user's current and longest streak of correct responses
+  - [ ] The current counter increments when a user guesses an answer correctly
+  - [ ] The current counter resets to 0 when a user guesses an answer incorrectly
+  - [ ] A separate counter tracks the longest streak, updating if the value of the current streak counter exceeds the value of the longest streak counter
+- [ ] A user can mark a card that they have mastered and have it removed from the pool of displayed cards
+  - [ ] The user can mark a card to indicate that it has been mastered
+  - [ ] Mastered cards are removed from the pool of displayed cards and added to a list of mastered cards
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you added to improve the site's functionality!
+* [x] Added a normal/random mode toggle so users can choose between ordered studying and randomized practice.
+* [x] Added custom correct and try-again images for answer feedback.
+* [x] Added a playful strawberry-inspired visual theme.
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented required features:
 
-<img src='flashcards-gif.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='flashcards-final.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-GIF created with GIF created with [Kap](https://getkap.co/)  
+GIF created with [Kap](https://getkap.co/)
 
+## Notes
 
-## Lessons Learned
-
-While building this project, I learned how to use React state to control what appears on the screen. I practiced using useState to keep track of the current flashcard, flip cards between the question and answer sides, and randomly choose the next card. I also learned how arrays of objects can be used to store structured data, such as question-and-answer pairs.
-
-This project helped me better understand how user interactions work in React, especially using onClick events to trigger changes. I also practiced organizing my app into different sections, connecting JSX with CSS classes, and designing a more polished interface with a consistent visual theme. One of the biggest takeaways was learning how small pieces of logic, like changing an index or toggling a boolean, can create an interactive user experience.
+One challenge was understanding how to separate different pieces of state in React. The app uses state to remember the current card, whether the card is flipped, the user's typed guess, the answer feedback, and the selected mode. Another challenge was updating the navigation logic so normal mode moves through the cards in order while random mode still chooses random cards.
 
 ## License
 
